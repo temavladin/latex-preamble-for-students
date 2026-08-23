@@ -1,0 +1,304 @@
+%%% Преамбула ГОСТ 7.32
+%%% Артемий Владин
+%%% https://github.com/temavladin
+
+
+%% Формат бумаги, размер шрифта (Выберите 12pt или 14pt)
+\documentclass[a4paper, 14pt]{extarticle}
+
+
+%% Локализация
+\usepackage[english,russian]{babel}
+\usepackage{indentfirst} %% Красная строка
+\addto\captionsrussian{\renewcommand{\figurename}{Рисунок}}
+\addto\captionsrussian{\renewcommand{\tablename}{Таблица}}
+\addto\captionsrussian{\renewcommand{\contentsname}{\hfill \normalsize \bfseries СОДЕРЖАНИЕ \hfill}}
+
+
+%% Основной шрифт
+\usepackage{fontspec}
+\setmainfont[Ligatures=TeX]{Times New Roman}
+
+%% Машинописный шрифт
+\setmonofont{Consolas}[Scale=0.9]
+%\setmonofont{Fira Mono}
+
+%% Математический шрифт (Рекомендуемые: STIX или XITS)
+\usepackage{unicode-math}
+%\setmathfont{STIX Two Math}
+%\setmathfont{STIX Two Math}[range={it/greek->up,bfit/greek->bfup}]
+
+
+%% Поля документа
+\usepackage[left=30mm, right=15mm, top=20mm, bottom=20mm]{geometry}
+%% Нумерация страниц
+\pagestyle{plain}
+
+%% Абзацный отступ
+\setlength{\parindent}{1.25 cm}
+%% Межабзацный интервал
+\setlength{\parskip}{0pt}
+
+\usepackage{setspace}
+%% Полуторный межстрочный интервал
+\onehalfspacing
+
+
+%% Настройка переноса слов
+\usepackage{microtype}
+\pretolerance=-1 %% Отключение попытки выравнивания строки без переносов
+\tolerance=300 %% Позволяет избежать длинных пробелов
+\emergencystretch=3em %% Аварийное растяжение межсловных пробелов
+\exhyphenpenalty=150 %% Штраф для переносов после дефиса
+\doublehyphendemerits=10000 %% Запрет на два переноса подряд в двух соседних строках
+\finalhyphendemerits=10000 %% Запрет переноса слова в предпоследней строке абзаца
+
+%% Отключение переноса слов
+%\tolerance=1 %% Допуск на разряжённость
+%\emergencystretch=\maxdimen %% Растяжение межсловных пробелов
+%\hyphenpenalty=10000 %% Запрет на переносы слов
+%\hbadness=10000 %% Мера разряжённости
+
+
+%% Введение рисунков
+\usepackage{graphicx}
+%% Плавающие объекты
+\usepackage{float}
+%% Подключение цветов
+\usepackage{xcolor}
+%% Настройка подписей
+\usepackage{subfig}
+
+
+%% Подключение подписей к объектам
+\DeclareCaptionLabelFormat{gost}{#1~#2} %% Формат метки: "Рисунок 1", "Таблица 2"
+\DeclareCaptionLabelSeparator{gost}{~---~} %% Разделитель между меткой и текстом подписи
+\usepackage{caption} %% Подписи к плавающим объектам
+
+%% Рисунки по центру без переносов
+\DeclareCaptionFormat{gost-figure}{%
+\begingroup
+\centering
+\hyphenpenalty=10000
+\exhyphenpenalty=10000
+#1#2#3%
+\endgroup
+}
+
+%% Таблицы слева без переносов
+\DeclareCaptionFormat{gost-table}{%
+\begingroup
+\raggedright
+\hyphenpenalty=10000
+\exhyphenpenalty=10000
+#1#2#3%
+\endgroup
+}
+
+\captionsetup[figure]{format=gost-figure, labelformat=gost, labelsep=gost}
+\captionsetup[table]{format=gost-table, labelformat=gost, labelsep=gost, singlelinecheck=false}
+
+
+%% Стили заголовков
+\usepackage{xparse} %% Создание своих команд
+\NewDocumentCommand{\gostheading}{s m}{ %% Команда для заголовка по ГОСТ
+\clearpage
+\IfBooleanTF{#1}
+{% Звёздочка ЕСТЬ: просто печатаем заголовок (без добавления в содержание)
+\begin{center}
+\bfseries\MakeUppercase{#2}
+\end{center}
+}
+{% Звёздочки НЕТ: добавляем в оглавление и создаём якорь
+\phantomsection
+\addcontentsline{toc}{section}{#2}
+\begin{center}
+\bfseries\MakeUppercase{#2}
+\end{center}
+}
+\par
+}
+
+
+%% Стили заголовков
+\usepackage{titlesec}
+\titleformat{\section}[hang]
+{\normalsize \bfseries \hyphenpenalty=10000} %% Формат
+{\thesection}{1 em} %% Нумерация и отступ
+{} %% Любой доп. код
+
+\titleformat{\subsection}[hang]
+{\normalsize \bfseries \hyphenpenalty=10000}
+{\thesubsection}{1 em}
+{}
+	
+\titleformat{\subsubsection}[hang]
+{\normalsize}
+{\thesubsubsection}{1 em}
+{}
+
+%% Отступы от заголовка
+\titlespacing*{\section}{12.5 mm}{0.5\baselineskip}{0.1\baselineskip}
+\titlespacing*{\subsection}{12.5 mm}{0.5\baselineskip}{0.1\baselineskip}
+\titlespacing*{\subsubsection}{12.5 mm}{\parskip}{-\parskip}
+
+
+%% Настройки содержания
+\usepackage{titletoc}
+
+\titlecontents{section}
+[2 em] % Общий отступ от левого края
+{\vspace{0.3\baselineskip}} % Вертикальный промежуток 
+{\contentslabel{2 em}} % Нумерованные
+{\hspace*{-2 em}} % Ненумерованные
+{\titlerule*[0.5pc]{.}\contentspage} % Точки
+
+\titlecontents{subsection}
+[4.9 em]
+{}
+{\contentslabel{2.7em}}
+{\hspace*{2.7em}}
+{\titlerule*[0.5pc]{.}\contentspage}
+
+\titlecontents{subsubsection}
+[8.6 em]
+{}
+{\contentslabel{3.5 em}}
+{\hspace*{3.5 em}}
+{\titlerule*[0.5pc]{.}\contentspage}
+
+
+%% Стиль списков
+\usepackage{enumitem}
+\AddEnumerateCounter{\asbuk}{\@asbuk}{\cyrm}
+%% Списки начинаются с красной строки (12.5 мм)
+\setlist[itemize]{wide=\parindent, leftmargin=*, label={---}, itemsep=0pt, topsep=0pt, parsep=0pt, partopsep=0pt}
+\setlist[enumerate]{wide=\parindent, leftmargin=*, itemsep=0pt, topsep=0pt, parsep=0pt, partopsep=0pt}
+\setlist[enumerate,1]{label=\arabic*.}
+\setlist[enumerate,2]{label=\asbuk*)}
+
+
+%% Гиперссылки
+\usepackage{hyperref}
+\hypersetup{
+unicode,
+colorlinks,
+citecolor=black,
+filecolor=black,
+linkcolor=black,
+urlcolor=blue %% Ссылки в интернет синие
+}
+
+
+%% Настройка таблиц
+\renewcommand{\arraystretch}{1.3} %% Высота строк таблицы
+%\setlength{\tabcolsep}{1 em} % Отступы слева и справа от содержимого ячейки
+
+
+%% Авто датировка
+\usepackage[ddmmyy]{datetime} %% Дата \today
+\renewcommand{\dateseparator}{.} %% Разделитель точка
+
+
+%% Дополнительные пакеты
+\usepackage{amsmath, amsthm, amsfonts} %% Математика формулы
+%\usepackage{amssymb} %% Этот пакет не работает вместе с unicode-math
+\usepackage{icomma} %% Умная запятая для чисел
+\usepackage{mathtools}
+\usepackage{textcomp}
+\usepackage{tabularray}
+\usepackage{rotating}
+\usepackage{tabularx}
+\usepackage{array}
+\usepackage{ragged2e}
+\usepackage{makecell} %% Переносы в клетках таблицы
+\usepackage{hhline} %% Улучшенные горизонтальные линии в таблицах
+\usepackage{multirow} %% Ячейки в несколько строчек в таблицах
+\usepackage{longtable} %% Многостраничные таблицы
+
+
+%% Листинг
+\usepackage{fvextra} %% Улучшенный Verbatim
+
+
+%% Настройка библиографии
+\makeatletter
+
+% 1. Переопределяем окружение thebibliography, чтобы убрать заголовок
+\renewenvironment{thebibliography}[1]{
+	\par % начинаем с нового абзаца
+	\setcounter{mybibcntr}{0} % сбрасываем счетчик источников
+}{
+	\par % заканчиваем абзацем
+}
+
+% 2. Переопределяем команду \bibitem для вывода "Цифра. Текст" как абзац
+\newcounter{mybibcntr}
+\renewcommand{\bibitem}[1]{%
+	\stepcounter{mybibcntr}%
+	\par % каждый источник начинается с нового абзаца (будет стандартный отступ 1.25 см)
+	% Записываем номер в aux-файл, чтобы команда \cite{} в тексте работала корректно
+	\if@filesw \immediate\write\@auxout{\string\bibcite{#1}{\the\c@mybibcntr}}\fi
+	\the\c@mybibcntr. \ignorespaces % выводим "1. " и игнорируем пробел после команды
+}
+
+\makeatother
+
+
+%% Приложение ГОСТ
+%% Счётчик приложений
+\newcounter{gostappendix}
+\renewcommand{\thegostappendix}{%
+\ifcase\value{gostappendix}%
+\or А\or Б\or В\or Г\or Д\or Е\or Ж\or И\or К%
+\or Л\or М\or Н\or П\or Р\or С\or Т\or У\or Ф%
+\or Х\or Ц\or Ч\or Ш\or Щ\or Э\or Ю\or Я%
+\else ?\fi
+}
+
+%% Команда для приложения
+\NewDocumentCommand{\gostappendix}{m}{%
+\stepcounter{gostappendix}%
+\clearpage
+\phantomsection
+	
+% Сбрасываем счётчики для нового приложения
+\setcounter{section}{0}%
+\setcounter{figure}{0}%
+\setcounter{table}{0}%
+\setcounter{equation}{0}% % Формулы тоже по ГОСТу нумеруются в приложениях
+	
+% Задаём новый формат нумерации с буквой приложения
+\renewcommand{\thesection}{\thegostappendix.\arabic{section}}%
+\renewcommand{\thefigure}{\thegostappendix.\arabic{figure}}%
+\renewcommand{\thetable}{\thegostappendix.\arabic{table}}%
+\renewcommand{\theequation}{\thegostappendix.\arabic{equation}}%
+
+\addcontentsline{toc}{section}{Приложение~\thegostappendix\ --- #1}%
+\begin{center}
+{\normalsize\bfseries ПРИЛОЖЕНИЕ~\thegostappendix\par}
+{\bfseries #1\par}
+\end{center}
+}
+
+
+%% Титульный лист
+%% Определение заполнителей титульного листа
+\newcommand{\UniversityDepartment}[1]{\gdef\setUniversityDepartment{#1}}
+\newcommand{\setUniversityDepartment}{}
+\newcommand{\TeacherPosition}[1]{\gdef\setTeacherPosition{#1}}
+\newcommand{\setTeacherPosition}{}
+\newcommand{\TeacherName}[1]{\gdef\setTeacherName{#1}}
+\newcommand{\setTeacherName}{}
+\newcommand{\WorkNumber}[1]{\gdef\setWorkNumber{#1}}
+\newcommand{\setWorkNumber}{}
+\newcommand{\WorkName}[1]{\gdef\setWorkName{#1}}
+\newcommand{\setWorkName}{}
+\newcommand{\UniversityDiscipline}[1]{\gdef\setUniversityDiscipline{#1}}
+\newcommand{\setUniversityDiscipline}{}
+\newcommand{\StudentGroup}[1]{\gdef\setStudentGroup{#1}}
+\newcommand{\setStudentGroup}{}
+\newcommand{\StudentName}[1]{\gdef\setStudentName{#1}}
+\newcommand{\setStudentName}{}
+\newcommand{\DATE}[1]{\gdef\setDATE{#1}}
+\newcommand{\setDATE}{\today}
