@@ -3,8 +3,8 @@
 %%% https://github.com/temavladin
 
 
-%% Формат бумаги, размер шрифта (Выберите 12pt или 14pt)
-%% \documentclass[a4paper, 14pt]{extarticle}
+%% Формат бумаги, размер шрифта (12pt или 14pt)
+%% documentclass a4paper 14pt extarticle
 
 
 %% Локализация
@@ -25,7 +25,9 @@
 %\setmonofont{Fira Mono}
 
 %% Математический шрифт (Рекомендуемые: STIX или XITS)
-\usepackage{unicode-math}
+\usepackage{mathtools}
+% Подключаем unicode-math и отключаем конкретные предупреждения о конфликтах
+\usepackage[warnings-off={mathtools-colon,mathtools-overbracket}]{unicode-math}
 %\setmathfont{STIX Two Math}
 %\setmathfont{STIX Two Math}[range={it/greek->up,bfit/greek->bfup}]
 
@@ -205,7 +207,6 @@ urlcolor=blue %% Ссылки в интернет синие
 \usepackage{amsmath, amsthm, amsfonts} %% Математика формулы
 %\usepackage{amssymb} %% Этот пакет не работает вместе с unicode-math
 \usepackage{icomma} %% Умная запятая для чисел
-\usepackage{mathtools}
 \usepackage{textcomp}
 \usepackage{tabularray}
 \usepackage{rotating}
