@@ -26,7 +26,6 @@
 
 %% Математический шрифт (Рекомендуемые: STIX или XITS)
 \usepackage{mathtools}
-% Подключаем unicode-math и отключаем конкретные предупреждения о конфликтах
 \usepackage[warnings-off={mathtools-colon,mathtools-overbracket}]{unicode-math}
 %\setmathfont{STIX Two Math}
 %\setmathfont{STIX Two Math}[range={it/greek->up,bfit/greek->bfup}]
@@ -98,8 +97,8 @@
 \endgroup
 }
 
-\captionsetup[figure]{format=gost-figure, labelformat=gost, labelsep=gost}
-\captionsetup[table]{format=gost-table, labelformat=gost, labelsep=gost, singlelinecheck=false}
+\captionsetup*[figure]{format=gost-figure, labelformat=gost, labelsep=gost}
+\captionsetup*[table]{format=gost-table, labelformat=gost, labelsep=gost, singlelinecheck=false}
 
 
 %% Стили заголовков
